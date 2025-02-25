@@ -1,19 +1,13 @@
 :root {
-  --background: #ffffff;
+  --background: url("https://wiki.bloodontheclocktower.com/skins/pivot/assets/images/content-background.webp");
   --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  height: 100%;
 }
 
 body {
@@ -35,8 +29,36 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+dialog {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+
+dialog > div {
+  background-color: white;
+  min-height: 300px;
+  width: 100%;
+  max-width: 400px;
+  padding: 32px;
+  margin: 60px auto;
+}
+
+dialog > div > button {
+  margin-left: auto;
+  display: block;
+  font-size: 2rem;
+  padding: 8px;
+  background-color: transparent;
+  border: none;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }

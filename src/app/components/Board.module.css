@@ -1,0 +1,51 @@
+.board {
+  min-height: calc(100vh - 80px);
+  position: relative;
+}
+
+.player {
+  --size: 200px;
+  width: var(--size);
+  overflow: visible;
+  position: absolute;
+  top: calc(50% - var(--size) / 2);
+  left: calc(50% - var(--size) / 2);
+  display: flex;
+  flex-direction: column;
+}
+
+.player > button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.character {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: black;
+}
+
+.player {
+  transform: rotate(var(--deg)) translateY(-270px) rotate(calc(var(--deg) * -1));
+}
+
+.tag {
+  background-color: rgb(80, 12, 140);
+  color: rgb(251, 240, 255);
+  padding: 6px 8px;
+  width: max-content;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.825rem;
+  border: none;
+  cursor: pointer;
+}
+
+.tags {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding-top: 4px;
+}
