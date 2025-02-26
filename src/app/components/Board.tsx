@@ -7,9 +7,7 @@ import ShuffleButton from "./ShuffleButton";
 export type Player = {
   name: string;
   character: string;
-  isDead: boolean;
-  isPoisoned: boolean;
-  isDrunk: boolean;
+  states: string[];
 };
 
 export default function Board() {
@@ -33,10 +31,7 @@ export default function Board() {
           event.preventDefault();
           const name = event.target.name.value;
           if (!data.find((pl) => pl.name === name)) {
-            setData([
-              ...data,
-              { name, character: "none", isDead: false, isDrunk: false, isPoisoned: false },
-            ]);
+            setData([...data, { name, character: "none", states: [] }]);
           }
         }}
       >
@@ -52,9 +47,7 @@ export default function Board() {
             return {
               ...pl,
               character: characters[index] ?? "none",
-              isDead: false,
-              isDrunk: false,
-              isPoisoned: false,
+              states: [],
             };
           });
 
@@ -77,14 +70,12 @@ export default function Board() {
               removeState={(state) => {
                 const newData = structuredClone(data);
                 const indexOfPlayer = newData.findIndex((p) => p.name === player.name);
-                if (state === "Dead") {
-                  newData[indexOfPlayer].isDead = false;
-                }
-                if (state === "Poisoned") {
-                  newData[indexOfPlayer].isPoisoned = false;
-                }
-                if (state === "Drunk") {
-                  newData[indexOfPlayer].isDrunk = false;
+                if (newData[indexOfPlayer].states.includes(state)) {
+                  newData[indexOfPlayer].states = newData[indexOfPlayer].states.filter(
+                    (s) => s !== state
+                  );
+                } else {
+                  newData[indexOfPlayer].states = [...newData[indexOfPlayer].states, state];
                 }
                 setData(newData);
               }}

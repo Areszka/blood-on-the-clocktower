@@ -1,7 +1,7 @@
 "use client";
 import React, { CSSProperties, useRef } from "react";
 import { Player as PlayerType } from "./Board";
-import { CHARACTERS } from "@/data/trouble-brewing";
+import { CHARACTERS, STATES } from "@/data/trouble-brewing";
 import styles from "./Board.module.css";
 import Image from "next/image";
 
@@ -38,9 +38,11 @@ export default function Player({
           <p className={styles.character}>{player.character}</p>
         </button>
         <div className={styles.tags}>
-          {player.isDead && <Tag removeState={removeState}>Dead</Tag>}
-          {player.isDrunk && <Tag removeState={removeState}>Drunk</Tag>}
-          {player.isPoisoned && <Tag removeState={removeState}>Poisoned</Tag>}
+          {player.states.map((state) => (
+            <Tag key={state} removeState={removeState}>
+              {state}
+            </Tag>
+          ))}
         </div>
       </div>
       {/*  */}
@@ -50,35 +52,39 @@ export default function Player({
           onSubmit={(event) => {
             event.preventDefault();
             const character = event.currentTarget.character.value;
-            const isDrunk = event.currentTarget.drunk.checked;
-            const isDead = event.currentTarget.dead.checked;
-            const isPoisoned = event.currentTarget.poisoned.checked;
+            const selectedStates = event.target.states.selectedOptions;
 
-            updatePlayer({ ...player, character, isDead, isDrunk, isPoisoned });
+            const states = [];
+            for (let i = 0; i < selectedStates.length; i++) {
+              states.push(selectedStates[i].value);
+            }
+
+            updatePlayer({ ...player, character, states: states });
 
             ref.current?.togglePopover();
           }}
         >
           <select defaultValue={player.character} id="character">
-            <option>Chose character...</option>
+            <option value="none">Chose character...</option>
             {CHARACTERS.map((character) => (
               <option value={character.name} key={character.name}>
                 {character.name}
               </option>
             ))}
           </select>
-          <label>
-            Drunk
-            <input type="checkbox" id="drunk" defaultChecked={player.isDrunk} />
-          </label>
-          <label>
-            Dead
-            <input type="checkbox" id="dead" defaultChecked={player.isDead} />
-          </label>
-          <label>
-            Poisoned
-            <input type="checkbox" id="poisoned" defaultChecked={player.isPoisoned} />
-          </label>
+          <select
+            multiple
+            id="states"
+            defaultValue={player.states}
+            className={styles.select}
+            size={STATES.length}
+          >
+            {STATES.map((state) => (
+              <option value={state} key={state}>
+                {state}
+              </option>
+            ))}
+          </select>
           <button>Update</button>
         </form>
       </div>

@@ -123,4 +123,21 @@ export const CHARACTERS = [
   },
 ];
 
-// kazdy gracz moze byc - martwy lub zywy | excecuted - not excecuted | sober - drunk | poisoned - healthy
+export const STATES = [
+  "Dead",
+  "Master",
+  "Die",
+  "Minion (Investigator)",
+  "Decoy (Investigator)",
+  "Decoy (Fortune Teller)",
+  "Decoy (Washerwoman)",
+  "Decoy (Librarian)",
+  "Outsider (Librarian)",
+  "Townsfolk (Washerwoman)",
+  "Protected",
+  "Poisoned",
+  "Demon",
+  "Used",
+  "Executed",
+  "Drunk",
+];
