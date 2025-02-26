@@ -18,6 +18,8 @@ export default function Player({
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const characterPL = CHARACTERS.find((c) => c.name.en === player.character)?.name.pl ?? "404";
+
   return (
     <>
       <motion.div
@@ -43,7 +45,7 @@ export default function Player({
             {player.name}
           </p>
 
-          <p className={styles.character}>{player.character}</p>
+          <p className={styles.character}>{characterPL}</p>
         </button>
         <div className={styles.tags}>
           {player.states.map((state) => (
@@ -56,8 +58,12 @@ export default function Player({
       {/*  */}
       {isOpen &&
         createPortal(
-          <dialog open={isOpen}>
-            <div>
+          <dialog open={isOpen} onClick={() => setIsOpen(false)}>
+            <div
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
               <h1>{player.name}</h1>
               <form
                 onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -75,12 +81,34 @@ export default function Player({
                 }}
               >
                 <select defaultValue={player.character} id="character">
-                  <option value="none">Chose character...</option>
-                  {CHARACTERS.map((character) => (
-                    <option value={character.name} key={character.name}>
-                      {character.name}
-                    </option>
-                  ))}
+                  <optgroup label="Mieszczanie">
+                    {CHARACTERS.filter((c) => c.type.en === "Townsfolk").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Wyrzutki">
+                    {CHARACTERS.filter((c) => c.type.en === "Outsider").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Poplecznicy">
+                    {CHARACTERS.filter((c) => c.type.en === "Minion").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Demony">
+                    {CHARACTERS.filter((c) => c.type.en === "Demon").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
+                      </option>
+                    ))}
+                  </optgroup>
                 </select>
                 <select
                   multiple
@@ -90,8 +118,8 @@ export default function Player({
                   size={STATES.length}
                 >
                   {STATES.map((state) => (
-                    <option value={state} key={state}>
-                      {state}
+                    <option value={state.en} key={state.en}>
+                      {state.pl}
                     </option>
                   ))}
                 </select>
@@ -112,6 +140,7 @@ function Tag({
   children: string;
   removeState: (state: string) => void;
 }) {
+  const statePL = STATES.find((s) => s.en === children)?.pl ?? "";
   return (
     <button
       className={styles.tag}
@@ -119,7 +148,7 @@ function Tag({
         removeState(children);
       }}
     >
-      {children}
+      {statePL}
     </button>
   );
 }

@@ -46,31 +46,31 @@ export default function ShuffleButton({
                   multiple
                   className={styles.select}
                 >
-                  <optgroup label="Townsfolks">
-                    {CHARACTERS.filter((c) => c.type === "Townsfolk").map((character) => (
-                      <option value={character.name} key={character.name}>
-                        {character.name}
+                  <optgroup label="Mieszczanie">
+                    {CHARACTERS.filter((c) => c.type.en === "Townsfolk").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
                       </option>
                     ))}
                   </optgroup>
-                  <optgroup label="Outsiders">
-                    {CHARACTERS.filter((c) => c.type === "Outsider").map((character) => (
-                      <option value={character.name} key={character.name}>
-                        {character.name}
+                  <optgroup label="Wyrzutki">
+                    {CHARACTERS.filter((c) => c.type.en === "Outsider").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
                       </option>
                     ))}
                   </optgroup>
-                  <optgroup label="Minions">
-                    {CHARACTERS.filter((c) => c.type === "Minion").map((character) => (
-                      <option value={character.name} key={character.name}>
-                        {character.name}
+                  <optgroup label="Poplecznicy">
+                    {CHARACTERS.filter((c) => c.type.en === "Minion").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
                       </option>
                     ))}
                   </optgroup>
-                  <optgroup label="Demons">
-                    {CHARACTERS.filter((c) => c.type === "Demon").map((character) => (
-                      <option value={character.name} key={character.name}>
-                        {character.name}
+                  <optgroup label="Demony">
+                    {CHARACTERS.filter((c) => c.type.en === "Demon").map((character) => (
+                      <option value={character.name.en} key={character.name.en}>
+                        {character.name.pl}
                       </option>
                     ))}
                   </optgroup>

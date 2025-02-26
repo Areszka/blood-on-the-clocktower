@@ -8,7 +8,7 @@ import { Player } from "./Board";
 export default function Characters({ data }: { data: Player[] }) {
   const playersCharacters = data.map((player) => player.character).filter((c) => c !== "none");
   const charactersInGame = CHARACTERS.filter((character) =>
-    playersCharacters.includes(character.name)
+    playersCharacters.includes(character.name.en)
   );
 
   return (
@@ -16,17 +16,25 @@ export default function Characters({ data }: { data: Player[] }) {
       {charactersInGame.length > 0 && <h3>In Game</h3>}
       <ul>
         {charactersInGame.map((character) => (
-          <CharacterItem name={character.name} power={character.power} key={character.name} />
+          <CharacterItem
+            name={character.name.pl}
+            power={character.power.pl}
+            key={character.name.en}
+          />
         ))}
       </ul>
       <h3>Other</h3>
       <ul>
         {CHARACTERS.map((character) => {
-          if (playersCharacters.includes(character.name)) {
+          if (playersCharacters.includes(character.name.en)) {
             return;
           }
           return (
-            <CharacterItem name={character.name} power={character.power} key={character.name} />
+            <CharacterItem
+              name={character.name.pl}
+              power={character.power.pl}
+              key={character.name.en}
+            />
           );
         })}
       </ul>
