@@ -3,31 +3,3 @@
   grid-template-columns: 1fr 20rem;
   height: 100%;
 }
-
-.side {
-  overflow-y: scroll;
-  border-left: 1px dotted #c8c8c8;
-}
-
-.side ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  margin: 16px;
-}
-
-.side li {
-  display: flex;
-  text-wrap: balance;
-  gap: 6px;
-}
-
-.side li:not(:last-child) {
-  border-bottom: 1px dotted #c8c8c8;
-}
-
-.side div {
-  padding-block: 16px;
-  width: 100%;
-  cursor: pointer;
-}

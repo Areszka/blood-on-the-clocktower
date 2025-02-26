@@ -46,11 +46,34 @@ export default function ShuffleButton({
                   multiple
                   className={styles.select}
                 >
-                  {CHARACTERS.map((character) => (
-                    <option value={character.name} key={character.name}>
-                      {character.name}
-                    </option>
-                  ))}
+                  <optgroup label="Townsfolks">
+                    {CHARACTERS.filter((c) => c.type === "Townsfolk").map((character) => (
+                      <option value={character.name} key={character.name}>
+                        {character.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Outsiders">
+                    {CHARACTERS.filter((c) => c.type === "Outsider").map((character) => (
+                      <option value={character.name} key={character.name}>
+                        {character.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Minions">
+                    {CHARACTERS.filter((c) => c.type === "Minion").map((character) => (
+                      <option value={character.name} key={character.name}>
+                        {character.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Demons">
+                    {CHARACTERS.filter((c) => c.type === "Demon").map((character) => (
+                      <option value={character.name} key={character.name}>
+                        {character.name}
+                      </option>
+                    ))}
+                  </optgroup>
                 </select>
                 <button>Shuffle</button>
               </form>

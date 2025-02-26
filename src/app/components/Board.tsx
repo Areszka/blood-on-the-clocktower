@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import Player from "./Player";
 import styles from "./Board.module.css";
 import ShuffleButton from "./ShuffleButton";
@@ -10,20 +10,13 @@ export type Player = {
   states: string[];
 };
 
-export default function Board() {
-  const [data, setData] = React.useState<Array<Player>>([]);
-
-  React.useEffect(() => {
-    const storedData = localStorage.getItem("data");
-    if (storedData) {
-      setData(JSON.parse(storedData));
-    }
-  }, []);
-
-  React.useEffect(() => {
-    localStorage.setItem("data", JSON.stringify(data));
-  }, [data]);
-
+export default function Board({
+  data,
+  setData,
+}: {
+  data: Array<Player>;
+  setData: Dispatch<SetStateAction<Player[]>>;
+}) {
   return (
     <div>
       <form
@@ -55,12 +48,11 @@ export default function Board() {
         }}
       />
       <div className={styles.board}>
-        {data.map((player, index) => {
+        {data.map((player) => {
           return (
             <Player
               key={player.name}
               player={player}
-              deg={(index * 360) / data.length}
               updatePlayer={(updatedPlayer) => {
                 const newData = structuredClone(data);
                 const indexOfPlayer = newData.findIndex((p) => p.name === player.name);

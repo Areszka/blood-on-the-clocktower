@@ -1,23 +1,29 @@
+"use client";
 import styles from "./page.module.css";
-import { CHARACTERS } from "@/data/trouble-brewing";
-import CharacterItem from "./components/CharacterItem";
-import Board from "./components/Board";
+import Board, { Player } from "./components/Board";
+import Characters from "./components/Characters";
+import React from "react";
 
 export default function Home() {
+  const [data, setData] = React.useState<Array<Player>>([]);
+
+  React.useEffect(() => {
+    const storedData = localStorage.getItem("data");
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("data", JSON.stringify(data));
+  }, [data]);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Board />
+        <Board data={data} setData={setData} />
       </main>
-      <div className={styles.side}>
-        <ul>
-          {CHARACTERS.map((character) => {
-            return (
-              <CharacterItem name={character.name} power={character.power} key={character.name} />
-            );
-          })}
-        </ul>
-      </div>
+      <Characters data={data} />
     </div>
   );
 }
