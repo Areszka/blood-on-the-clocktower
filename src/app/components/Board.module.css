@@ -26,10 +26,6 @@
   color: black;
 }
 
-.player {
-  transform: rotate(var(--deg)) translateY(-270px) rotate(calc(var(--deg) * -1));
-}
-
 .tag {
   background-color: rgb(80, 12, 140);
   color: rgb(251, 240, 255);

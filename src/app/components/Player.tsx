@@ -1,27 +1,34 @@
 "use client";
-import React, { CSSProperties, useRef } from "react";
+import React, { useState } from "react";
 import { Player as PlayerType } from "./Board";
 import { CHARACTERS, STATES } from "@/data/trouble-brewing";
 import styles from "./Board.module.css";
 import Image from "next/image";
+import { motion } from "motion/react";
+import { createPortal } from "react-dom";
 
 export default function Player({
   player,
   updatePlayer,
-  deg,
   removeState,
 }: {
   player: PlayerType;
-  deg: number;
   updatePlayer: (player: PlayerType) => void;
   removeState: (state: string) => void;
 }) {
-  const ref = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <div style={{ "--deg": `${deg}deg` } as CSSProperties} className={styles.player}>
-        <button popoverTarget={`edit-player-${player.name}`}>
+      <motion.div
+        drag
+        whileDrag={{ scale: 0.6 }}
+        animate={{ scale: 1 }}
+        initial={{ scale: 0 }}
+        className={styles.player}
+        dragMomentum={false}
+      >
+        <button onClick={() => setIsOpen(true)}>
           <Image
             alt="logo"
             src={`/Icon_${player.character.toLowerCase().split(" ").join("")}.png`}
@@ -35,6 +42,7 @@ export default function Player({
           >
             {player.name}
           </p>
+
           <p className={styles.character}>{player.character}</p>
         </button>
         <div className={styles.tags}>
@@ -44,50 +52,55 @@ export default function Player({
             </Tag>
           ))}
         </div>
-      </div>
+      </motion.div>
       {/*  */}
-      <div id={`edit-player-${player.name}`} popover="auto" className={styles.popover} ref={ref}>
-        <h1>{player.name}</h1>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            const character = event.currentTarget.character.value;
-            const selectedStates = event.target.states.selectedOptions;
+      {isOpen &&
+        createPortal(
+          <dialog open={isOpen}>
+            <div>
+              <h1>{player.name}</h1>
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const character = event.currentTarget.character.value;
+                  const selectedStates = event.target.states.selectedOptions;
 
-            const states = [];
-            for (let i = 0; i < selectedStates.length; i++) {
-              states.push(selectedStates[i].value);
-            }
+                  const states = [];
+                  for (let i = 0; i < selectedStates.length; i++) {
+                    states.push(selectedStates[i].value);
+                  }
 
-            updatePlayer({ ...player, character, states: states });
-
-            ref.current?.togglePopover();
-          }}
-        >
-          <select defaultValue={player.character} id="character">
-            <option value="none">Chose character...</option>
-            {CHARACTERS.map((character) => (
-              <option value={character.name} key={character.name}>
-                {character.name}
-              </option>
-            ))}
-          </select>
-          <select
-            multiple
-            id="states"
-            defaultValue={player.states}
-            className={styles.select}
-            size={STATES.length}
-          >
-            {STATES.map((state) => (
-              <option value={state} key={state}>
-                {state}
-              </option>
-            ))}
-          </select>
-          <button>Update</button>
-        </form>
-      </div>
+                  updatePlayer({ ...player, character, states: states });
+                  setIsOpen(false);
+                }}
+              >
+                <select defaultValue={player.character} id="character">
+                  <option value="none">Chose character...</option>
+                  {CHARACTERS.map((character) => (
+                    <option value={character.name} key={character.name}>
+                      {character.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  multiple
+                  id="states"
+                  defaultValue={player.states}
+                  className={styles.select}
+                  size={STATES.length}
+                >
+                  {STATES.map((state) => (
+                    <option value={state} key={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
+                <button>Update</button>
+              </form>
+            </div>
+          </dialog>,
+          document.body
+        )}
     </>
   );
 }
