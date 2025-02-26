@@ -2,6 +2,7 @@
 import React from "react";
 import Player from "./Player";
 import styles from "./Board.module.css";
+import ShuffleButton from "./ShuffleButton";
 
 export type Player = {
   name: string;
@@ -31,10 +32,12 @@ export default function Board() {
         onSubmit={(event) => {
           event.preventDefault();
           const name = event.target.name.value;
-          setData([
-            ...data,
-            { name, character: "none", isDead: false, isDrunk: false, isPoisoned: false },
-          ]);
+          if (!data.find((pl) => pl.name === name)) {
+            setData([
+              ...data,
+              { name, character: "none", isDead: false, isDrunk: false, isPoisoned: false },
+            ]);
+          }
         }}
       >
         <label>
@@ -43,6 +46,21 @@ export default function Board() {
         </label>
         <button>Add</button>
       </form>
+      <ShuffleButton
+        updatePlayers={(characters: string[]) => {
+          const newData = structuredClone(data).map((pl, index) => {
+            return {
+              ...pl,
+              character: characters[index] ?? "none",
+              isDead: false,
+              isDrunk: false,
+              isPoisoned: false,
+            };
+          });
+
+          setData(newData);
+        }}
+      />
       <div className={styles.board}>
         {data.map((player, index) => {
           return (

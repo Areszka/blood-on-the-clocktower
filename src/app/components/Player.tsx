@@ -1,9 +1,8 @@
 "use client";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useRef } from "react";
 import { Player as PlayerType } from "./Board";
 import { CHARACTERS } from "@/data/trouble-brewing";
 import styles from "./Board.module.css";
-import { createPortal } from "react-dom";
 import Image from "next/image";
 
 export default function Player({
@@ -17,19 +16,18 @@ export default function Player({
   updatePlayer: (player: PlayerType) => void;
   removeState: (state: string) => void;
 }) {
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const ref = useRef(null);
 
   return (
     <>
       <div style={{ "--deg": `${deg}deg` } as CSSProperties} className={styles.player}>
-        <button onClick={() => setModalIsOpen(true)}>
+        <button popoverTarget={`edit-player-${player.name}`}>
           <Image
             alt="logo"
             src={`/Icon_${player.character.toLowerCase().split(" ").join("")}.png`}
             width={120}
             height={120}
           />
-
           <p
             style={{
               color: "gray",
@@ -46,50 +44,44 @@ export default function Player({
         </div>
       </div>
       {/*  */}
-      {modalIsOpen &&
-        createPortal(
-          <dialog open={modalIsOpen}>
-            <div>
-              <button onClick={() => setModalIsOpen(false)}>x</button>
-              <h1>{player.name}</h1>
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  const character = event.target.character.value;
-                  const isDrunk = event.target.drunk.checked;
-                  const isDead = event.target.dead.checked;
-                  const isPoisoned = event.target.poisoned.checked;
+      <div id={`edit-player-${player.name}`} popover="auto" className={styles.popover} ref={ref}>
+        <h1>{player.name}</h1>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            const character = event.currentTarget.character.value;
+            const isDrunk = event.currentTarget.drunk.checked;
+            const isDead = event.currentTarget.dead.checked;
+            const isPoisoned = event.currentTarget.poisoned.checked;
 
-                  updatePlayer({ ...player, character, isDead, isDrunk, isPoisoned });
-                  setModalIsOpen(false);
-                }}
-              >
-                <select defaultValue={player.character} id="character">
-                  <option>Chose character...</option>
-                  {CHARACTERS.map((character) => (
-                    <option value={character.name} key={character.name}>
-                      {character.name}
-                    </option>
-                  ))}
-                </select>
-                <label>
-                  Drunk
-                  <input type="checkbox" id="drunk" defaultChecked={player.isDrunk} />
-                </label>
-                <label>
-                  Dead
-                  <input type="checkbox" id="dead" defaultChecked={player.isDead} />
-                </label>
-                <label>
-                  Poisoned
-                  <input type="checkbox" id="poisoned" defaultChecked={player.isPoisoned} />
-                </label>
-                <button>Update</button>
-              </form>
-            </div>
-          </dialog>,
-          document.body
-        )}
+            updatePlayer({ ...player, character, isDead, isDrunk, isPoisoned });
+
+            ref.current?.togglePopover();
+          }}
+        >
+          <select defaultValue={player.character} id="character">
+            <option>Chose character...</option>
+            {CHARACTERS.map((character) => (
+              <option value={character.name} key={character.name}>
+                {character.name}
+              </option>
+            ))}
+          </select>
+          <label>
+            Drunk
+            <input type="checkbox" id="drunk" defaultChecked={player.isDrunk} />
+          </label>
+          <label>
+            Dead
+            <input type="checkbox" id="dead" defaultChecked={player.isDead} />
+          </label>
+          <label>
+            Poisoned
+            <input type="checkbox" id="poisoned" defaultChecked={player.isPoisoned} />
+          </label>
+          <button>Update</button>
+        </form>
+      </div>
     </>
   );
 }
