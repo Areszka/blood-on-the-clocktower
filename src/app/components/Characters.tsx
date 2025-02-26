@@ -5,7 +5,24 @@ import { CHARACTERS } from "@/data/trouble-brewing";
 import CharacterItem from "./CharacterItem";
 import { Player } from "./Board";
 
-export default function Characters({ data }: { data: Player[] }) {
+export default function Characters({ data }: { data?: Player[] }) {
+  if (!data) {
+    return (
+      <div className={styles.side}>
+        <ul>
+          {CHARACTERS.map((character) => {
+            return (
+              <CharacterItem
+                name={character.name.pl}
+                power={character.power.pl}
+                key={character.name.en}
+              />
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
   const playersCharacters = data.map((player) => player.character).filter((c) => c !== "none");
   const charactersInGame = CHARACTERS.filter((character) =>
     playersCharacters.includes(character.name.en)
