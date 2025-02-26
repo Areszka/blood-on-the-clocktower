@@ -17,36 +17,45 @@ export default function Board({
   data: Array<Player>;
   setData: Dispatch<SetStateAction<Player[]>>;
 }) {
+  const [newPlayer, setNewPlayer] = React.useState("");
   return (
     <div>
-      <form
-        onSubmit={(event: FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          const name = event.currentTarget.playerName.value;
-          if (!data.find((pl) => pl.name === name)) {
-            setData([...data, { name, character: "none", states: [] }]);
-          }
-        }}
-      >
-        <label>
-          Name:
-          <input required minLength={3} id="playerName" />
-        </label>
-        <button>Add</button>
-      </form>
-      <ShuffleButton
-        updatePlayers={(characters: string[]) => {
-          const newData = structuredClone(data).map((pl, index) => {
-            return {
-              ...pl,
-              character: characters[index] ?? "none",
-              states: [],
-            };
-          });
+      <div className={styles.buttonsWrapper}>
+        <form
+          className={styles.addPlayer}
+          onSubmit={(event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            if (!data.find((pl) => pl.name === newPlayer)) {
+              setData([...data, { name: newPlayer, character: "none", states: [] }]);
+            }
+            setNewPlayer("");
+          }}
+        >
+          <label>
+            <input
+              required
+              minLength={3}
+              value={newPlayer}
+              onChange={(event) => setNewPlayer(event.target.value)}
+              placeholder="Filip..."
+            />
+          </label>
+          <button type="submit">+</button>
+        </form>
+        <ShuffleButton
+          updatePlayers={(characters: string[]) => {
+            const newData = structuredClone(data).map((pl, index) => {
+              return {
+                ...pl,
+                character: characters[index] ?? "none",
+                states: [],
+              };
+            });
 
-          setData(newData);
-        }}
-      />
+            setData(newData);
+          }}
+        />
+      </div>
       <div className={styles.board}>
         {data.map((player) => {
           return (

@@ -21,8 +21,8 @@ export default function ShuffleButton({
       </button>
       {isOpen &&
         createPortal(
-          <dialog open={isOpen}>
-            <div>
+          <dialog open={isOpen} onClick={() => setIsOpen(false)}>
+            <div onClick={(event) => event.stopPropagation()}>
               <button onClick={() => setIsOpen(false)}>x</button>
               <form
                 onSubmit={(event: FormEvent<HTMLFormElement>) => {
