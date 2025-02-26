@@ -1,6 +1,6 @@
 "use client";
 import { CHARACTERS } from "@/data/trouble-brewing";
-import React from "react";
+import React, { FormEvent } from "react";
 import { createPortal } from "react-dom";
 import styles from "./Board.module.css";
 
@@ -25,9 +25,9 @@ export default function ShuffleButton({
             <div>
               <button onClick={() => setIsOpen(false)}>x</button>
               <form
-                onSubmit={(event) => {
+                onSubmit={(event: FormEvent<HTMLFormElement>) => {
                   event.preventDefault();
-                  const selectedOptions = event.target.character.selectedOptions;
+                  const selectedOptions = event.currentTarget.character.selectedOptions;
 
                   const characters = [];
                   for (let i = 0; i < selectedOptions.length; i++) {

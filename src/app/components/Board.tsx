@@ -1,5 +1,5 @@
 "use client";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import Player from "./Player";
 import styles from "./Board.module.css";
 import ShuffleButton from "./ShuffleButton";
@@ -20,9 +20,9 @@ export default function Board({
   return (
     <div>
       <form
-        onSubmit={(event) => {
+        onSubmit={(event: FormEvent<HTMLFormElement>) => {
           event.preventDefault();
-          const name = event.target.name.value;
+          const name = event.currentTarget.playerName.value;
           if (!data.find((pl) => pl.name === name)) {
             setData([...data, { name, character: "none", states: [] }]);
           }
@@ -30,7 +30,7 @@ export default function Board({
       >
         <label>
           Name:
-          <input required minLength={3} id="name" />
+          <input required minLength={3} id="playerName" />
         </label>
         <button>Add</button>
       </form>

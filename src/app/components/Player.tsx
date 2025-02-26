@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Player as PlayerType } from "./Board";
 import { CHARACTERS, STATES } from "@/data/trouble-brewing";
 import styles from "./Board.module.css";
@@ -60,10 +60,10 @@ export default function Player({
             <div>
               <h1>{player.name}</h1>
               <form
-                onSubmit={(event) => {
+                onSubmit={(event: FormEvent<HTMLFormElement>) => {
                   event.preventDefault();
                   const character = event.currentTarget.character.value;
-                  const selectedStates = event.target.states.selectedOptions;
+                  const selectedStates = event.currentTarget.states.selectedOptions;
 
                   const states = [];
                   for (let i = 0; i < selectedStates.length; i++) {
