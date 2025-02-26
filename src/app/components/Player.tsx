@@ -18,7 +18,7 @@ export default function Player({
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const characterPL = CHARACTERS.find((c) => c.name.en === player.character)?.name.pl ?? "404";
+  const characterPL = CHARACTERS.find((c) => c.name.en === player.character)?.name.pl ?? "none";
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function Player({
             {player.name}
           </p>
 
-          <p className={styles.character}>{characterPL}</p>
+          {characterPL !== "none" && <p className={styles.character}>{characterPL}</p>}
         </button>
         <div className={styles.tags}>
           {player.states.map((state) => (

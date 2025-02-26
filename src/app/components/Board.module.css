@@ -106,6 +106,24 @@
   color: #85837f;
 }
 
+.buttonsWrapper {
+  --color: rgb(119, 99, 99);
+  --background-color: rgb(119, 99, 99, 0.2);
+  display: flex;
+  gap: 20px;
+  margin: 16px;
+}
+
+.buttonsWrapper button {
+  padding: 6px;
+  text-transform: uppercase;
+  background-color: var(--background-color);
+  border: 1px solid var(--color);
+  font-weight: 900;
+  color: var(--color);
+  border-radius: 6px;
+}
+
 .addPlayer {
   display: flex;
 }
@@ -117,17 +135,10 @@
 .addPlayer input {
   padding: 6px;
   background-color: transparent;
+  border: 1px solid var(--color);
+  border-right: none;
+  border-radius: 6px 0 0 6px;
 }
-
-.buttonsWrapper button {
-  padding: 6px;
-  text-transform: uppercase;
-  background-color: transparent;
-  font-weight: 900;
-}
-
-.buttonsWrapper {
-  display: flex;
-  gap: 20px;
-  margin: 16px;
+.addPlayer button {
+  border-radius: 0 6px 6px 0;
 }
